@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping >
+	<!-- 定义Order实体 -->
+	<class name="com.cn.shop.model.Order" table="store_order">
+		<!-- 定义主键及其生成策略 -->
+		<id name="id" column="id" type="long">
+			<generator class="increment" />
+		</id>
+		<!-- 定义订单号字段 -->
+		<property name="orderNum" column="orderNum" unique="true" not-null="true" length="17"></property>
+		<!-- <property name="orderNum" column="orderNum"  length="17"></property> -->
+		<!-- 定义订单状态字段 -->
+		<property name="status" type="integer" not-null="true"	column="status"/>
+		<!-- <property name="status" type="integer" 	column="status"/> -->
+		<!-- 定义总价字段 -->
+		<property name="cost" type="double" column="cost"></property>
+		<!-- 定义用户引用 -->
+		<many-to-one name="user" column="user_id" class="com.cn.shop.model.User" cascade="none" lazy="false"></many-to-one>
+		<!-- 定义包含的订单项 -->
+		<map name="items" table="store_order_item" lazy="false" cascade="all" order-by="product_id">
+			<key column="order_id"></key>
+			<map-key column="product_id" type="long"/>
+			<one-to-many class="com.cn.shop.model.Item"/>
+		</map>
+	</class>
+</hibernate-mapping>

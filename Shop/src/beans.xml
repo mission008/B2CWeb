@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xsi:schemaLocation="http://www.springframework.org/schema/beans
+         http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+         http://www.springframework.org/schema/context
+         http://www.springframework.org/schema/context/spring-context-3.0.xsd
+         http://www.springframework.org/schema/aop
+         http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+         http://www.springframework.org/schema/tx
+     	http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+  
+	<context:annotation-config/>
+	<context:component-scan base-package="com.cn.shop"/>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="configLocation"
+			value="classpath:hibernate.cfg.xml">
+		</property>
+	</bean>
+	
+  
+  	<bean id="txManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+  	<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<!-- <aop:config>
+		
+			<aop:pointcut expression="execution ( public * com.cn.shop.dao..*.*(..))" id="bussinessService"/>
+	
+			<aop:advisor pointcut-ref="bussinessService" advice-ref="txAdvice"/>
+			
+	</aop:config>
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+	  <tx:attributes>
+	  <tx:method name="get*" read-only="true" />
+	  <tx:method name="save*" propagation ="REQUIRED"/>
+	  <tx:method name="delete*" propagation ="REQUIRED"/>
+	  <tx:method name="update*" propagation ="REQUIRED"/>
+	   <tx:method name="loginCheck" propagation ="REQUIRED"/>
+	  </tx:attributes>
+	</tx:advice>
+ -->  
+  	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+		
+			<property name="sessionFactory" ref="sessionFactory"></property>
+	
+	</bean>
+	
+	<!-- dao层 -->
+	<bean id="baseDAO" class="com.cn.shop.dao.BaseDAOImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>	
+	<bean id="userDAO" class="com.cn.shop.dao.UserDAOImpl">
+		<property name="hibernateTemplate" ref="hibernateTemplate" />
+	</bean>	
+	<!-- 业务层 -->
+	<bean id="userServiceTarget" 
+		class="com.cn.shop.service.UserServiceImpl">
+		<property name="userDAO" ref="userDAO" />
+	</bean>
+	<bean id="productServiceTarget" 
+		class="com.cn.shop.service.ProductServiceImpl">
+		<property name="baseDAO" ref="baseDAO" />
+	</bean>
+	
+	<bean id="orderServiceTarget" 
+		class="com.cn.shop.service.OrderServiceImpl">
+		<property name="baseDAO" ref="baseDAO" />
+	</bean>
+	
+	<!-- 表现层 -->
+	<bean name="loginAction" class="com.cn.shop.action.LoginAction">
+		<property name="userService" ref="userServiceTarget"></property>
+	</bean>	
+	
+	<bean name="loginoutAction" class="com.cn.shop.action.LoginOutAction">
+	</bean>	
+	<bean name="listAction" class="com.cn.shop.action.ListAction">
+		<property name="productService" ref="productServiceTarget"></property>
+	</bean>	
+	
+	<bean name="cartAction" class="com.cn.shop.action.CartAction">
+	</bean>	
+	
+	<bean name="orderAction" class="com.cn.shop.action.OrderAction">
+		<property name="orderService" ref="orderServiceTarget"></property>
+	</bean>	
+	<bean name="managerAction" class="com.cn.shop.action.ManagerAction">
+		<property name="orderService" ref="orderServiceTarget"></property>
+	</bean>	
+	<bean name="registerAction" class="com.cn.shop.action.RegisterAction">
+		<property name="userService" ref="userServiceTarget"></property>
+	</bean>
+	
+	<!-- 2014.8.28 商品增删改查 -->
+	
+	<bean name="productAction" class="com.cn.shop.action.ProductAction">
+		<property name="productService" ref="productServiceTarget"></property>
+	</bean>	
+	
+	<!-- 2014.8.31商品搜索 -->
+	
+	<bean name="findAction" class="com.cn.shop.action.FindAction">
+		<property name="productService" ref="productServiceTarget"></property>
+	</bean>			
+	
+	
+	<aop:config>
+		
+			<aop:pointcut expression="execution ( public * com.cn.shop.service..*.*(..))" id="bussinessService"/>
+	
+			<aop:advisor pointcut-ref="bussinessService" advice-ref="txAdvice"/>
+			
+	</aop:config>
+	
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+	  <tx:attributes>
+	  <tx:method name="get*" read-only="true" />
+	  <tx:method name="next*" propagation ="REQUIRED"/>
+	   <tx:method name="login*" propagation ="REQUIRED"/>
+	   <tx:method name="generate*" propagation ="REQUIRED"/>
+	   <tx:method name="add*" propagation ="REQUIRED"/>
+	   <tx:method name="delete*" propagation ="REQUIRED"/>
+	   <tx:method name="Update*" propagation ="REQUIRED"/>
+	  </tx:attributes>
+	</tx:advice>
+	
+	
+</beans>
+
+
+
+
+
+
+
+
+

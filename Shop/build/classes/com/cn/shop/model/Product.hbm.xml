@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping >
+	<!-- 定义Product实体 -->
+	<class name="com.cn.shop.model.Product" table="store_product">
+		<!-- 定义主键及其生成策略 -->
+		<id name="id" column="id" type="long">
+			<generator class="increment" />
+		</id>
+		<!-- 定义商品名称字段 -->
+		<property name="name" not-null="true" length="32" column="name"/>
+		<!-- 定义商品描述字段 -->
+		<property name="description" length="500" column="description" />
+		<!-- 定义价格字段 -->
+		<property name="price" type="double" column="price"></property>
+		<!-- 定义图片地址字段 -->
+		<property name="imageSrc" length="500" column="imageSrc"></property>
+	</class>
+</hibernate-mapping>

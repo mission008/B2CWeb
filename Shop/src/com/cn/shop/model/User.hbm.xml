@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping >
+	<!-- 定义User实体 -->
+	<class name="com.cn.shop.model.User" table="store_user" discriminator-value="common">
+		<!-- 定义主键及其生成策略 -->
+		<id name="id" column="id" type="long">
+			<generator class="increment" />
+		</id>
+		<!-- 定义类型区别字段type，普通用户的值为common，管理员为admin -->
+		<discriminator column="type" type="string"></discriminator>
+		<!-- 定义用户名字段 -->
+		<property name="name" unique="true" not-null="true"	length="32" column="name"/>
+		<!-- 定义密码字段 -->
+		<property name="password" not-null="true" length="16" column="password" />
+		<!-- 定义住址字段 -->
+		<property name="address" column="address"></property>
+		<!-- 定义email字段 -->
+		<property name="email" column="email"></property>
+		<!-- 定义邮编字段 -->
+		<property name="postCode" column="postCode"></property>
+		<!-- 定义家庭电话号码字段 -->
+		<property name="homePhone" column="homePhone"></property>
+		<!-- 定义手机电话号码字段 -->
+		<property name="cellPhone" column="cellPhone"></property>
+		<!-- 定义办公室电话号码字段 -->
+		<property name="officePhone" column="officePhone"></property>
+		<!-- 定义管理员子类 -->
+		<subclass name="com.cn.shop.model.Administrator" discriminator-value="admin" >
+			<property name="workNo" column="workNo"></property>
+		</subclass>
+	</class>
+</hibernate-mapping>
+

@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+	<!-- 
+    <constant name="struts.enable.DynamicMethodInvocation" value="false" />
+    <constant name="struts.devMode" value="true" />
+
+    <package name="default" namespace="/" extends="struts-default">
+
+        <default-action-ref name="index" />
+
+        <global-results>
+            <result name="error">/error.jsp</result>
+        </global-results>
+
+        <global-exception-mappings>
+            <exception-mapping exception="java.lang.Exception" result="error"/>
+        </global-exception-mappings>
+        
+        <action name="index">
+            <result type="redirectAction">
+                <param name="actionName">HelloWorld</param>
+                <param name="namespace">/example</param>
+            </result>
+        </action>
+    </package>
+  
+
+    <include file="example.xml"/>
+    
+    -->
+    
+
+     
+     <constant name="struts.enable.DynamicMethodInvocation" value="true" />
+    <constant name="struts.devMode" value="true" />
+    <constant name="struts.i18n.encoding" value="UTF-8" /> 
+    
+     <!-- 指定国际化资源文件的baseName为messageResource -->  
+    <constant name="struts.custom.i18n.resources" value="messageResource" />  
+    
+       <!-- 上传的全部图片的最大限制-->  
+    <constant name="struts.multipart.maxSize" value="1024102400" />  
+     
+   <!-- 临时存放文件的路径 -->  
+   <constant name="struts.multipart.saveDir" value="d:/test" />  
+    
+     <package name="from" namespace="/from" extends="struts-default">
+
+     
+
+        <action name="loginaction" class="loginAction">
+            <result name="user">
+              	/cart.jsp
+            </result>
+             <result name="restart">
+              	/login.jsp
+            </result>
+                       
+            <!-- 2014.9.1进入admin后台 -->
+             <result name="manager">
+              	/manager/index.jsp
+            </result>
+                   
+        </action>
+        
+         <action name="loginoutaction" class="loginoutAction">
+            <result name="out">
+              	/login.jsp
+            </result>
+        
+                   
+        </action>
+        
+        <action name="listaction" class="listAction" method="list">
+            <result name="list">
+              	/list.jsp
+            </result>
+        
+                           
+        </action>
+        
+         <action name="addaction" class="listAction" method="addItem">
+            <result name="add">
+              	/reflushlist.jsp
+            </result>
+            
+            <result name="find">
+            
+              	/reflushfind.jsp
+              	
+            </result>
+                         
+        </action>
+        
+        <!-- 2014.8.28显示图片   传输时缩小图片大小 -->
+        
+        
+      <!--   <action name="showaction" class="listAction" method="showImage">
+        
+                               
+        </action> -->
+        
+          <action name="cart_inedx" class="cartAction" method="CartIndex">
+            <result name="cart">
+              	/cart.jsp
+            </result>
+           </action>
+        
+           
+           <action name="cart_modify" class="cartAction" method="modifyItemNumber">
+            <result name="cart">
+              	/cart.jsp
+            </result>
+            </action>
+            
+            <action name="cart_delete" class="cartAction" method="deleteItem">
+            <result name="cart">
+              	/cart.jsp
+            </result>
+            </action>
+            
+           <action name="cart_clear" class="cartAction" method="clear">
+            <result name="cart">
+              	/cart.jsp
+            </result>
+
+                               
+        	</action>
+        
+        	<action name="order_index" class="orderAction" method="index">
+            <result name="login">
+              	/login.jsp
+            </result>
+            <result name="order">
+              	/order.jsp
+            </result>
+            </action>
+            
+           <action name="cart_post" class="orderAction" method="postOrder">
+            <result name="success">
+              	/success.jsp
+            </result>           
+                   
+        	</action>
+        	
+        	<action name="user_register" class="registerAction" method="userRegister">
+            <result name="reset">
+              	/userregister.jsp
+            </result>
+            
+             <result name="verify">
+              	/registerreminder.jsp
+            </result>           
+                              
+                   
+        	</action>
+        	
+        	<action name="user_save" class="registerAction" method="usersave">
+            <result name="save">
+              	/login.jsp
+            </result>
+                  
+                   
+        	</action>
+        	
+        	
+        	<action name="user_code" class="registerAction" method="code">
+                         
+        	</action>
+        	
+    
+        	<!-- 商品搜索 -->
+        	<action name="find" class="findAction" method="findproduct">
+            <result name="success">
+              	/findlist.jsp
+            </result>
+                  
+                   
+        	</action>
+        	
+        	
+        	<!-- <action name="manager" class="managerAction" method="index">
+            <result name="manager">
+              	/manager/manager.jsp
+            </result>                              
+        	</action>
+        	
+        	<action name="nextaction" class="managerAction" method="next">
+            <result name="next">
+              	/manager/flush.jsp
+            </result>                              
+        	</action> -->
+         
+        
+      
+    </package>
+    
+     <package name="manager" namespace="/manager" extends="struts-default">
+     
+     <action name="manager" class="managerAction" method="index">
+            <result name="manager">
+              	/manager/manager.jsp
+            </result>                              
+        </action>
+        	
+        	<action name="nextaction" class="managerAction" method="next">
+            <result name="next">
+              	/manager/flush.jsp
+            </result>                              
+        	</action>
+     
+    
+    <action name="addproduct" class="productAction" method="addProduct">
+            <result name="success">
+              	/manager/index.jsp
+            </result>                              
+     </action>
+     
+   	<!-- 2014.8.29后台商品浏览 -->
+      <action name="listproduct" class="productAction" method="productlist">
+            <result name="list">
+              	/manager/productlist.jsp
+            </result>                              
+     </action>
+     
+     <!-- 2014.8.29修改商品 -->
+      
+      <action name="update" class="productAction" method="updateProduct">
+            <result name="update">
+              	/manager/updateproduct.jsp
+            </result>                              
+     </action>                     
+
+     
+      <action name="save" class="productAction" method="saveProduct">
+            <result name="save">
+              	/manager/reflush.jsp
+            </result>                              
+     </action>         
+      
+ 
+      
+       <action name="delete" class="productAction" method="deleteProduct  ">
+            <result name="delete">
+              	/manager/reflush.jsp
+            </result>                              
+     </action>         
+      	
+        	
+     
+     </package>
+    
+
+</struts>
